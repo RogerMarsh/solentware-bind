@@ -395,6 +395,6 @@ class ExceptionHandler:
                 os.path.dirname(self.get_error_file_name()), filename
             ),
             "w",
-        ) as f:
-            for t in textwidget.dump("1.0", tkinter.END):
-                f.write(repr(t) + "\n")
+        ) as file:
+            for text in textwidget.dump("1.0", tkinter.END):
+                file.write(repr(text) + "\n")
