@@ -85,7 +85,7 @@ class Bindings(ExceptionHandler):
 
     def __del__(self):
         """Destroy any bindings in _binding."""
-        self.unbind_all(allow_exceptions=True)
+        self.unbind_all_handlers(allow_exceptions=True)
         self._frozen_binding.clear()
 
         # Class hierarchy for Bindings is Bindings(ExceptionHandler(object))
@@ -179,7 +179,7 @@ class Bindings(ExceptionHandler):
                 )
             )
 
-    def unbind_all_except_frozen(self):
+    def unbind_all_handlers_except_frozen(self):
         """Unbind registered sequences which are not in _frozen_binding."""
         binding = self._binding
         for key in set(binding).difference(self._frozen_binding):
@@ -193,7 +193,7 @@ class Bindings(ExceptionHandler):
             del tag_binding[key]
         self._current_binding = None
 
-    def unbind_all(self, allow_exceptions=False):
+    def unbind_all_handlers(self, allow_exceptions=False):
         """Unbind all registered sequences.
 
         The default for allow_exceptions should be used everywhere except

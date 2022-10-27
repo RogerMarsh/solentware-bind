@@ -572,7 +572,7 @@ class Bindings(unittest.TestCase):
         for b in self.bindings._tag_binding.values():
             self.assertIsInstance(b, set)
             self.assertEqual(len(b) in {1, 2, 3}, True)
-        self.bindings.unbind_all()
+        self.bindings.unbind_all_handlers()
         self.assertEqual(len(self.bindings._binding), 0)
         self.assertEqual(len(self.bindings._tag_binding), 0)
 
@@ -611,7 +611,7 @@ class Bindings(unittest.TestCase):
         for b in self.bindings._tag_binding.values():
             self.assertIsInstance(b, set)
             self.assertEqual(len(b) in {1, 2, 3}, True)
-        self.bindings.unbind_all_except_frozen()
+        self.bindings.unbind_all_handlers_except_frozen()
         self.assertEqual(len(self.bindings._binding), 0)
         self.assertEqual(len(self.bindings._tag_binding), 0)
 
@@ -663,7 +663,7 @@ class Bindings(unittest.TestCase):
             self.assertIsInstance(b, set)
             self.assertEqual(len(b), 3)
         self.bindings.set_frozen_bindings()
-        self.bindings.unbind_all_except_frozen()
+        self.bindings.unbind_all_handlers_except_frozen()
         self.assertEqual(len(self.bindings._binding), 15)
         self.assertEqual(len(self.bindings._tag_binding), 6)
         for w in (
@@ -712,7 +712,7 @@ class Bindings(unittest.TestCase):
             self.assertEqual(len(b), 3)
         self.assertEqual(len(self.bindings._binding), 30)
         self.assertEqual(len(self.bindings._tag_binding), 12)
-        self.bindings.unbind_all_except_frozen()
+        self.bindings.unbind_all_handlers_except_frozen()
         for b in self.bindings._binding.values():
             self.assertIsInstance(b, set)
             self.assertEqual(len(b), 3)
@@ -722,7 +722,7 @@ class Bindings(unittest.TestCase):
         self.assertEqual(len(self.bindings._binding), 15)
         self.assertEqual(len(self.bindings._tag_binding), 6)
         self.bindings.unset_frozen_bindings()
-        self.bindings.unbind_all_except_frozen()
+        self.bindings.unbind_all_handlers_except_frozen()
         self.assertEqual(len(self.bindings._binding), 0)
         self.assertEqual(len(self.bindings._tag_binding), 0)
 
