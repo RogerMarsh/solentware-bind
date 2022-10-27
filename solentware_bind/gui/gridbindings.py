@@ -135,8 +135,8 @@ class GridBindings(Bindings):
 
         """
         for widget in widgets:
-            widget.bind(
-                self.receivefocuskey, self.try_event(self.focus_to_grid)
+            self.bind(
+                widget, self.receivefocuskey, function=self.focus_to_grid
             )
 
     def select_from_popup(self):
@@ -210,21 +210,22 @@ class SelectorGridBindings(GridBindings):
             if setbinding is None:
                 if clearbinding is True:
                     for widget in gridselector.values():
-                        widget.bind(sequence="<KeyPress-Return>")
-                        widget.bind(sequence="<Control-KeyPress-Return>")
+                        self.bind(widget, "<KeyPress-Return>")
+                        self.bind(widget, "<Control-KeyPress-Return>")
                 else:
                     widget = gridselector.get(clearbinding)
                     if widget is not None:
-                        widget.bind(sequence="<KeyPress-Return>")
-                        widget.bind(sequence="<Control-KeyPress-Return>")
+                        self.bind(widget, "<KeyPress-Return>")
+                        self.bind(widget, "<Control-KeyPress-Return>")
             return
         if setbinding is True:
             setbinding = (self,)
         widget = gridselector.get(self)
         if widget is not None:
-            widget.bind(
-                sequence="<KeyPress-Return>",
-                func=self.try_event(self.position_grid_at_record),
+            self.bind(
+                widget,
+                "<KeyPress-Return>",
+                function=self.position_grid_at_record,
             )
             slaved = {self}
             for binding, args in zip(setbinding, siblingargs):
@@ -242,9 +243,10 @@ class SelectorGridBindings(GridBindings):
             for binding, args in zip(setbinding, siblingargs):
                 for slave in slavegrids:
                     if slave == args["gridfocuskey"]:
-                        widget.bind(
-                            sequence="<Control-KeyPress-Return>",
-                            func=self.try_event(position_grids),
+                        self.bind(
+                            widget,
+                            "<Control-KeyPress-Return>",
+                            function=position_grids,
                         )
 
     def bindings(self, function=None):
@@ -254,9 +256,7 @@ class SelectorGridBindings(GridBindings):
 
         """
         super().bindings()
-        self.get_frame().bind(
-            sequence="<FocusIn>", func=self.try_event(function)
-        )
+        self.bind(self.get_frame(), sequence="<FocusIn>", function=function)
 
     def focus_selector(self, event):
         """Give focus to the Entry for record selection."""
@@ -330,27 +330,32 @@ class SelectorGridBindings(GridBindings):
                             sibling.get_horizontal_scrollbar(),
                             sibling.get_vertical_scrollbar(),
                         ):
-                            widget.bind(
+                            self.bind(
+                                widget,
                                 defaultsetfocuskey,
-                                self.try_event(self.focus_selector),
+                                function=self.focus_selector,
                             )
                             if setfocuskey is not None:
-                                widget.bind(
+                                self.bind(
+                                    widget,
                                     setfocuskey,
-                                    self.try_event(self.focus_selector),
+                                    function=self.focus_selector,
                                 )
                 for widget in widgets[:-1]:
-                    widget.bind(
-                        defaultsetfocuskey, self.try_event(self.focus_selector)
+                    self.bind(
+                        widget,
+                        defaultsetfocuskey,
+                        function=self.focus_selector,
                     )
                     if setfocuskey is not None:
-                        widget.bind(
-                            setfocuskey, self.try_event(self.focus_selector)
+                        self.bind(
+                            widget, setfocuskey, function=self.focus_selector
                         )
                     if keypress_grid_to_select is True:
-                        widget.bind(
+                        self.bind(
+                            widget,
                             "<KeyPress>",
-                            self.try_event(self.keypress_selector),
+                            function=self.keypress_selector,
                         )
                 # for shared selector __init__() targets last grid created
                 self.bind_return(
