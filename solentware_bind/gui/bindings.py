@@ -201,27 +201,35 @@ class Bindings(ExceptionHandler):
 
         """
         for key, function_ids in self._binding.items():
-            try:
-                for function in function_ids:
+            for function in function_ids:
+                try:
                     key[0].unbind(key[1], funcid=function)
-            except tkinter.TclError as exc:
-                if allow_exceptions:
-                    if str(exc).startswith("bad window path name "):
-                        continue
-                    if str(exc).startswith('can\'t invoke "bind" command: '):
-                        continue
-                raise
+                except tkinter.TclError as exc:
+                    if allow_exceptions:
+                        if str(exc).startswith("bad window path name "):
+                            continue
+                        if str(exc).startswith('can\'t invoke "bind" command: '):
+                            continue
+                    raise
         for key, function_ids in self._tag_binding.items():
-            try:
-                for function in function_ids:
+            for function in function_ids:
+                try:
                     key[0].tag_unbind(key[1], key[2], funcid=function)
-            except tkinter.TclError as exc:
-                if allow_exceptions:
-                    if str(exc).startswith("bad window path name "):
-                        continue
-                    if str(exc).startswith('can\'t invoke "bind" command: '):
-                        continue
-                raise
+                except tkinter.TclError as exc:
+                    if allow_exceptions:
+                        if str(exc).startswith("bad window path name "):
+                            continue
+                        if str(exc).startswith(
+                            'can\'t invoke "bind" command: '
+                        ):
+                            continue
+                        # Allow for attempts to unbind tag bindings after
+                        # destruction of widget.
+                        if str(exc).startswith(
+                            'invalid command name '
+                        ):
+                            continue
+                    raise
         self._binding.clear()
         self._tag_binding.clear()
         self._current_binding = None
