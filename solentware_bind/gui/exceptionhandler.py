@@ -15,6 +15,7 @@ module's CallbackException class when used to report exceptions in datagrids.
 Such as 'class DG(ExceptionHandler, DataGrid)'.
 
 """
+
 import tkinter
 
 BAD_WINDOW = 'bad window path name ".!'

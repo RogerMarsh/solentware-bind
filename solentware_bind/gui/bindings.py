@@ -22,6 +22,7 @@ Canvas and Text tag_bind methods within the Bindings.tag_bind method, which
 has widget as it's first argument.
 
 """
+
 import tkinter
 
 from .exceptionhandler import ExceptionHandler
@@ -208,7 +209,9 @@ class Bindings(ExceptionHandler):
                     if allow_exceptions:
                         if str(exc).startswith("bad window path name "):
                             continue
-                        if str(exc).startswith('can\'t invoke "bind" command: '):
+                        if str(exc).startswith(
+                            'can\'t invoke "bind" command: '
+                        ):
                             continue
                     raise
         for key, function_ids in self._tag_binding.items():
@@ -225,9 +228,7 @@ class Bindings(ExceptionHandler):
                             continue
                         # Allow for attempts to unbind tag bindings after
                         # destruction of widget.
-                        if str(exc).startswith(
-                            'invalid command name '
-                        ):
+                        if str(exc).startswith("invalid command name "):
                             continue
                     raise
         self._binding.clear()
